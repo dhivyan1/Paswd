@@ -53,4 +53,5 @@ This nested function allows the user to delete a specific password entry from th
 
 
 Security Note:
-Ensure you have a strong master key when setting up the vault for enhanced security, Encryption Strength of the passwords depends the complexity of the Master kay.
+Ensure you have a strong master key when setting up the vault for enhanced security.
+Encryption Strength of the passwords depends the complexity of the Master key.
