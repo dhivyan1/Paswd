@@ -1,4 +1,5 @@
-#password manager
+# OFFLINE password manager
+# Requires Notepad Feature
 
 
 '''
