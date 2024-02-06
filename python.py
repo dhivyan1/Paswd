@@ -1,26 +1,28 @@
 #password manager
 
-#function
 
 '''
-1.Generate a strong password of 25 charecters
-2.save website name/ password(encrypted)
-3.password manager is secured by a Master password(hashed)
+1.Generate a strong password 
+2.Add password to vault
+3.Delete password from vault
+4.View password from vault
 '''
 
 import hashlib
-#import secrets
 import os
 import random
 import string
+import base64
+global file_path
+
+file_path="#the txt file path here to store passwords"
 
 
-
-
-def generate(length):
+def generate():
+    length=int(input("Enter the length of password you want: "))
 
     if length <= 5:
-        print("Password length must be at least 5 characters for a secure password")
+        print("Password length must be at least 6 characters for a secure password")
     password = (
         random.choice(string.ascii_lowercase) +
         random.choice(string.ascii_uppercase) +
@@ -33,22 +35,11 @@ def generate(length):
         password += random.choice(string.punctuation
  + string.ascii_lowercase + string.digits + string.ascii_uppercase)
 
-    # Shuffle the characters to make the password more random
     password_list = list(password)
     random.shuffle(password_list)
     Generated_Password = ''.join(password_list)
     print("Generated password: ",Generated_Password)
 
-# Example usage
-    
-    #n=int(input("Enter the number of characters you need for the password(minimum 7 characters are recommended) :"))
-    '''pswd=''.join(secrets.choice(string.ascii_uppercase + string.digits +string.punctuation + string.ascii_lowercase + string.ascii_letters )
-                for i in range(n))'''
-
-    #20 character pswd
-    '''n=int(input("Enter the number of Charecters required for the password"))
-    pswd=secrets.token_hex(n)
-    print(str(pswd))''' 
 
 
 
@@ -62,16 +53,12 @@ def SetVaultKey():
     for i in range(0,15):
         hash_object.update(input_string.encode('utf-8'))
         hashed_string = hash_object.hexdigest()
-    with open("C:\\Users\\dhivy\\OneDrive\\Desktop\\Cyber security\\Projects\\password manager\\password.txt","w") as file:
+    with open(file_path,"w") as file:
         file.write(hashed_string)
 
-    #print("Original String:", input_string)
-    #print("Hashed String (SHA3_256):", hashed_string)
 
 
 
-
-#Completed
 global master_pass
 def OpenVault():
     
@@ -80,15 +67,13 @@ def OpenVault():
     for i in range(0,15):
         hash_obj.update(master_pass.encode('utf-8'))
         new_hash=hash_obj.hexdigest()
-    #print(new_hash)
-    with open("C:\\Users\\dhivy\\OneDrive\\Desktop\\Cyber security\\Projects\\password manager\\password.txt","r") as file:
+    
+    with open(file_path,"r") as file:
         file.seek(0)
         stored_hash=file.read(64)
-        #print("stored_hash",stored_hash)
-        #print("new_hash",new_hash)
         if stored_hash==new_hash:
             print("VAULT IS OPEN")
-            #Storage()
+            
         else:
             print("Wrong password")
             OpenVault()
@@ -99,57 +84,14 @@ def OpenVault():
 global key
 
 
-#Encyption
 
 
 
-
-import base64
 
 def encrypt_string(text, key="default_value"):
     encrypted = ''.join(chr(ord(char) ^ ord(key[i % len(key)])) for i, char in enumerate(text))
     encrypted_base64 = base64.b64encode(encrypted.encode()).decode()
     return encrypted_base64
-
-
-'''def encrypt_string(text, key="default_value"):
-    encrypted = ""
-    key_index = 0
-
-    for char in text:
-        encrypted_char = ord(char) ^ ord(key[key_index])
-        encrypted += chr(encrypted_char)
-
-        key_index = (key_index + 1) % len(key)
-
-    return encrypted'''
-
-
-
-
-#plaintext = "hello"
-#encryption_key = "dhiv123#$%@%"
-
-#encrypted_text = encrypt_string(plaintext)
-#print("Original Text:", plaintext)
-#print("Encrypted Text:", encrypted_text)
-
-#Decryption
-
-
-
-
-'''def decrypt_string(encrypted_text, key="default_value"):
-    decrypted = ""
-    key_index = 0
-
-    for char in encrypted_text:
-        decrypted_char = ord(char) ^ ord(key[key_index])
-        decrypted += chr(decrypted_char)
-
-        key_index = (key_index + 1) % len(key)
-
-    return decrypted'''
 
 
 import base64
@@ -169,7 +111,7 @@ def Storage(x):
     
     def View():
         try:
-            with open("C://Users//dhivy//OneDrive//Desktop//Cyber security//Projects//password manager//password.txt", 'r') as file:
+            with open(file_path, 'r') as file:
             # Read all lines from the file
                 lines = file.readlines()
 
@@ -201,25 +143,21 @@ def Storage(x):
         except FileNotFoundError:
             print("File not found:")
         except Exception as e:
-            print(f"An error occurred: {e}")
-
-# Example usage:
-    
-    
+            print(f"An error occurred: {e}")    
 
     
     def Add(url, username, new_password):
         
         try:
             encrypted_password = encrypt_string(new_password)
-        # print(encrypted_password)
-            with open("C://Users//dhivy//OneDrive//Desktop//Cyber security//Projects//password manager//password.txt", 'a') as file:
-                file.seek(0, 2)  # Move the cursor to the end of the file
+        
+            with open(file_path, 'a') as file:
+                file.seek(0, 2)  
                 file.write('\n')
                 file.write(f'{url}-> {username}:{encrypted_password}')
                 print("Password Added successfully")
         except FileNotFoundError:
-            print("Error: File not found at C://Users//dhivy//OneDrive//Desktop//Cyber security//Projects//password manager//password.txt")
+            print("Error: File not found at {filepath}")
         except Exception as e:
             print(f"An error occurred: {e}")
 
@@ -231,7 +169,7 @@ def Storage(x):
 
     def delete_line(username, login_id):
         try:
-            file_path = "C://Users//dhivy//OneDrive//Desktop//Cyber security//Projects//password manager//password.txt"
+            #file_path = file_path
             with open(file_path, 'r') as file:
                 lines = file.readlines()
 
@@ -240,8 +178,9 @@ def Storage(x):
                     if username in line and login_id in line:
                         continue  # Skip the line to delete
                     file.write(line)
+                    print("Password Deleted")
         
-            #print(f"Line(s) containing username '{username}' and login ID '{login_id}' deleted successfully from {file_path}")
+            
         except FileNotFoundError:
             print(f"Error: File not found at {file_path}")
         except Exception as e:
@@ -257,7 +196,7 @@ def Storage(x):
         print("Invalid input")
 
 
-if os.path.getsize("C://Users//dhivy//OneDrive//Desktop//Cyber security//Projects//password manager//password.txt") == 0:
+if os.path.getsize(file_path) == 0:
     print("\033[3;5;4;37;41mWELCOME TO PASSWD\033[0m")
     print("\033[1;3;97mA \033[1;3;97mmaster key\033[1;3;97m is required to access and save the passwords. Ensure you have a strong master key for enhanced security.\033[0m")
 
@@ -276,7 +215,7 @@ while True:
         choice = input("Enter your choice (1-4): ")
 
         if choice == '1':
-            generate(int(input("Enter the number of charecters in the password: ")))
+            generate()
         elif choice == '2':
             Storage(1)
         elif choice == '3':
