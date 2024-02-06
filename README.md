@@ -1,7 +1,7 @@
 PASSWD - Password Manager
 
 Overview:
-PASSWD is a command-line password manager that provides basic functionalities for generating strong passwords, adding passwords to a secure vault, deleting passwords from the vault, and viewing stored passwords.
+PASSWD is a OFFLINE command-line password manager that provides functionalities for generating strong passwords, adding passwords to a secure vault, deleting passwords from the vault, and viewing stored passwords.
 
 Features:
 
