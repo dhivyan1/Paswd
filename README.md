@@ -1,5 +1,11 @@
 PASSWD - Password Manager
 
+passwd 2.0:
+
+Updated version of paswd.
+
+Realized that , some sort of backup along with availability of the passwords online and access with any device was necessary, hence i have modified the code and uploded it to replit , so now i can access my passwords from any device online. However , the stored passwords(encrypted) is still available on the cloud so it can be a potential vulnerability.
+
 Overview:
 PASSWD is a OFFLINE command-line password manager that provides functionalities for generating strong passwords, adding passwords to a secure vault, deleting passwords from the vault, and viewing stored passwords.
 
